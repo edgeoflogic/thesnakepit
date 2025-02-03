@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy NBA Playoff Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Fantasy NBA Playoff Calculator</h1>
+
+    <section id="standings">
+        <h2>Current Standings</h2>
+        <table id="standingsTable">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                    <th>Division</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Standings will be loaded dynamically -->
+            </tbody>
+        </table>
+    </section>
+
+    <section id="matchups">
+        <h2>Enter Match Results</h2>
+        <div id="matchupsContainer">
+            <!-- Matchup results form will be generated dynamically -->
+        </div>
+        <button onclick="calculateStandings()">Update Standings</button>
+    </section>
+
+    <section id="playoffBracket">
+        <h2>Playoff Bracket</h2>
+        <ul id="bracketList">
+            <!-- Playoff teams will be updated dynamically -->
+        </ul>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
