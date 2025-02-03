@@ -150,43 +150,47 @@ function checkTieBreakers() {
     }
 }
 
-// Function to resolve tie-breakers with correct priority
+// Function to resolve tie-breakers correctly (Head-to-Head → Total Points)
 function resolveTies(tiedGroup) {
     let results = "";
     let headToHeadRecords = {};
 
-    // Initialize head-to-head win counts
+    // Initialize all teams' head-to-head win counts at 0
     tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
 
-    // Count total head-to-head wins for all tied teams
+    // Loop through all teams and count their head-to-head wins
     tiedGroup.forEach(teamA => {
         tiedGroup.forEach(teamB => {
             if (teamA.name !== teamB.name) {
                 let winner = simulateHeadToHead(teamA, teamB);
                 if (winner === teamA.name) {
-                    headToHeadRecords[teamA.name]++;
+                    headToHeadRecords[teamA.name]++; // Add 1 win for Team A
                 } else if (winner === teamB.name) {
-                    headToHeadRecords[teamB.name]++;
+                    headToHeadRecords[teamB.name]++; // Add 1 win for Team B
                 }
             }
         });
     });
 
-    // Sort tied teams by total head-to-head wins
+    // Debugging: Check if head-to-head records are counting properly
+    console.log("Head-to-Head Records Before Sorting:", headToHeadRecords);
+
+    // Sort teams first by total head-to-head wins
     let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadRecords[b.name] - headToHeadRecords[a.name]);
 
-    // If the top teams are still tied in head-to-head, use total points
+    // If still tied in head-to-head, use total points as the final tie-breaker
     if (headToHeadRecords[sortedByHeadToHead[0].name] === headToHeadRecords[sortedByHeadToHead[1].name]) {
         sortedByHeadToHead.sort((a, b) => b.totalPoints - a.totalPoints);
     }
 
-    // Display results
+    // Display final tie-breaker results
     sortedByHeadToHead.forEach((team, index) => {
         results += `<li>${index + 1}: ${team.name} (Head-to-Head Wins: ${headToHeadRecords[team.name]}, Total Points: ${team.totalPoints})</li>`;
     });
 
     return results;
 }
+
 
 
 // Function to simulate head-to-head results (Replace with actual match data if available)
