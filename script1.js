@@ -120,7 +120,7 @@ const matchups = {
     ]
 };
 
-let headToHeadWins = {};  // 🔥 Stores head-to-head win counts persistently
+let headToHeadWins = {};  // 🔥 Stores all head-to-head results persistently
 
 // Load standings into two separate tables
 function loadStandings() {
@@ -268,13 +268,13 @@ function simulateHeadToHead(teamA, teamB) {
 
     console.log(`🔎 Checking head-to-head: ${matchup1} OR ${matchup2}`);
 
-    // ✅ Ensure headToHeadWins is initialized
+    // ✅ Ensure headToHeadWins is initialized for both teams
     if (!headToHeadWins[teamA.name]) headToHeadWins[teamA.name] = 0;
     if (!headToHeadWins[teamB.name]) headToHeadWins[teamB.name] = 0;
 
     let winner = null;
 
-    // ✅ Check user-selected results
+    // ✅ First, check user-selected results
     if (userResults[matchup1]) {
         headToHeadWins[userResults[matchup1]] += 1;
         winner = userResults[matchup1];
@@ -286,7 +286,7 @@ function simulateHeadToHead(teamA, teamB) {
         console.log(`✅ User-selected result: ${matchup2} → Winner: ${userResults[matchup2]}`);
     }
 
-    // ✅ Check predefined head-to-head results
+    // ✅ Next, check predefined head-to-head results
     if (headToHeadResults[matchup1]) {
         headToHeadWins[headToHeadResults[matchup1]] += 1;
         winner = headToHeadResults[matchup1];
@@ -298,10 +298,11 @@ function simulateHeadToHead(teamA, teamB) {
         console.log(`📊 Predefined result: ${matchup2} → Winner: ${headToHeadResults[matchup2]}`);
     }
 
-    console.log(`🔢 Updated Head-to-Head Wins: ${teamA.name} = ${headToHeadWins[teamA.name]}, ${teamB.name} = ${headToHeadWins[teamB.name]}`);
+    console.log(`🔢 Stored Head-to-Head Wins: ${teamA.name} = ${headToHeadWins[teamA.name]}, ${teamB.name} = ${headToHeadWins[teamB.name]}`);
 
     return winner;
 }
+
 
 
 
@@ -348,9 +349,9 @@ function resolveTies(tiedGroup) {
 
     console.log("🔥 Using Stored Head-to-Head Wins:", JSON.stringify(headToHeadWins));
 
-    // ✅ Ensure head-to-head data exists before sorting
+    // ✅ Ensure head-to-head wins are initialized before sorting
     tiedGroup.forEach(team => {
-        if (!headToHeadWins[team.name]) {
+        if (!(team.name in headToHeadWins)) {
             headToHeadWins[team.name] = 0;
         }
     });
@@ -373,6 +374,7 @@ function resolveTies(tiedGroup) {
 
     return results;
 }
+
 
 
 function updateStandings(week) {
