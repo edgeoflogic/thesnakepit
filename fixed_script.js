@@ -79,6 +79,7 @@ function loadMatchups() {
             div.classList.add("matchup");
             div.innerHTML = `
                 <strong>${match.away} vs ${match.home}</strong><br>
+                <br><br> 
                 Winner: <select id="match${week}_${index}">
                     <option value="">Select</option>
                     <option value="${match.away}">${match.away}</option>
