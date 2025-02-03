@@ -45,10 +45,26 @@
 
     <section id="matchups">
         <h2>Enter Match Results</h2>
-        <div id="matchupsContainer">
-            <!-- Matchup results form will be generated dynamically -->
+
+        <div id="week16">
+            <h3>Week 16 Matchups</h3>
+            <div id="matchupsContainer16"></div>
+            <button onclick="updateStandings(16)" id="updateButton16">Update Standings</button>
         </div>
-        <button onclick="calculateStandings()">Update Standings</button>
+
+        <div id="week17">
+            <h3>Week 17 Matchups</h3>
+            <div id="matchupsContainer17"></div>
+            <button onclick="updateStandings(17)" id="updateButton17">Update Standings</button>
+        </div>
+
+        <div id="week18">
+            <h3>Week 18 Matchups</h3>
+            <div id="matchupsContainer18"></div>
+            <button onclick="updateStandings(18)" id="updateButton18">Update Standings</button>
+        </div>
+
+        <button onclick="resetStandings()">Reset Standings</button>
     </section>
 
     <section id="playoffBracket">
