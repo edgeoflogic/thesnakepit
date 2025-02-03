@@ -91,47 +91,6 @@ function loadMatchups() {
     });
 }
 
-// Update standings
-function updateStandings(week) {
-    document.getElementById(`updateButton${week}`).disabled = true;
-
-    matchups[week].forEach((match, index) => {
-        let winner = document.getElementById(`match${week}_${index}`).value;
-        if (winner) {
-            let team = teams.find(t => t.name === winner);
-            team.wins += 1;
-            let loser = teams.find(t => t.name !== winner && (t.name === match.away || t.name === match.home));
-            loser.losses += 1;
-        }
-    });
-
-    loadStandings();
-}
-
-// Reset standings to original
-function resetStandings() {
-    teams = JSON.parse(JSON.stringify(originalTeams)); // Reset data
-    loadStandings();
-
-    // ✅ Re-enable all "Update Standings" buttons
-    Object.keys(matchups).forEach(week => {
-        document.getElementById(`updateButton${week}`).disabled = false;
-    });
-
-    // ✅ Clear all dropdown selections
-    Object.keys(matchups).forEach(week => {
-        matchups[week].forEach((match, index) => {
-            document.getElementById(`match${week}_${index}`).value = "";
-        });
-    });
-
-    // ✅ Clear user-selected results
-    userResults = {};
-
-    // ✅ Clear tie-breaker results if needed
-    document.getElementById("tieBreakerContainer").innerHTML = "";
-}
-
 // Store user-entered match results for Weeks 16-18
 let userResults = {};
 
