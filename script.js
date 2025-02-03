@@ -12,13 +12,28 @@ let teams = [
     { name: "P Giddey", wins: 6, losses: 9, division: "West" }
 ];
 
-// Remaining matchups (From your schedule sheet)
+// Matchups for Weeks 16, 17, and 18
 let matchups = [
-    { week: 1, away: "The Extra Ruscle", home: "Once Brenno, Twice Shai" },
-    { week: 1, away: "Ja Rules", home: "Pop's Prodigy" },
-    { week: 1, away: "P Giddey", home: "DrakesNewFavouriteTeam" },
-    { week: 1, away: "Baton Rouge Cissies", home: "Jimmy’s Buckets" },
-    { week: 1, away: "ChetGPT", home: "BIG EASYZ" }
+    // Week 16
+    { week: 16, away: "Baton Rouge Cissies", home: "The Extra Ruscle" },
+    { week: 16, away: "Jimmy’s Buckets", home: "P Giddey" },
+    { week: 16, away: "Pop's Prodigy", home: "ChetGPT" },
+    { week: 16, away: "Once Brenno, Twice Shai", home: "BIG EASYZ" },
+    { week: 16, away: "Ja Rules", home: "DrakesNewFavouriteTeam" },
+
+    // Week 17
+    { week: 17, away: "The Extra Ruscle", home: "Jimmy’s Buckets" },
+    { week: 17, away: "P Giddey", home: "Pop's Prodigy" },
+    { week: 17, away: "ChetGPT", home: "Once Brenno, Twice Shai" },
+    { week: 17, away: "BIG EASYZ", home: "Ja Rules" },
+    { week: 17, away: "DrakesNewFavouriteTeam", home: "Baton Rouge Cissies" },
+
+    // Week 18
+    { week: 18, away: "Pop's Prodigy", home: "The Extra Ruscle" },
+    { week: 18, away: "Once Brenno, Twice Shai", home: "P Giddey" },
+    { week: 18, away: "Ja Rules", home: "ChetGPT" },
+    { week: 18, away: "Baton Rouge Cissies", home: "BIG EASYZ" },
+    { week: 18, away: "Jimmy’s Buckets", home: "DrakesNewFavouriteTeam" }
 ];
 
 // Load standings into two separate tables
@@ -51,7 +66,7 @@ function loadStandings() {
     });
 }
 
-// Generate matchup inputs with dropdown selections
+// Generate matchup inputs for Weeks 16-18
 function loadMatchups() {
     let container = document.getElementById("matchupsContainer");
     container.innerHTML = "";
