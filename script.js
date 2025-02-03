@@ -153,55 +153,41 @@ function checkTieBreakers() {
 // Function to resolve tie-breakers with correct priority
 function resolveTies(tiedGroup) {
     let results = "";
+    let headToHeadRecords = {};
 
-    // If two teams are tied, use head-to-head directly
-    if (tiedGroup.length === 2) {
-        let teamA = tiedGroup[0];
-        let teamB = tiedGroup[1];
+    // Initialize head-to-head win counts
+    tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
 
-        let headToHeadWinner = simulateHeadToHead(teamA, teamB);
-        
-        if (headToHeadWinner) {
-            results += `<li>${headToHeadWinner} wins tie-breaker over ${teamA.name === headToHeadWinner ? teamB.name : teamA.name} (Head-to-Head Result)</li>`;
-        } else {
-            // Use total points as final tie-breaker
-            let totalPointsWinner = teamA.totalPoints > teamB.totalPoints ? teamA.name : teamB.name;
-            results += `<li>${totalPointsWinner} wins tie-breaker over ${teamA.name === totalPointsWinner ? teamB.name : teamA.name} (Total Points Scored)</li>`;
-        }
-    }
-
-    // If 3+ teams are tied, sum head-to-head wins between them
-    else {
-        let headToHeadRecords = {};
-        tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
-
-        tiedGroup.forEach(teamA => {
-            tiedGroup.forEach(teamB => {
-                if (teamA.name !== teamB.name) {
-                    let winner = simulateHeadToHead(teamA, teamB);
-                    if (winner) {
-                        headToHeadRecords[winner]++;
-                    }
+    // Count total head-to-head wins for all tied teams
+    tiedGroup.forEach(teamA => {
+        tiedGroup.forEach(teamB => {
+            if (teamA.name !== teamB.name) {
+                let winner = simulateHeadToHead(teamA, teamB);
+                if (winner === teamA.name) {
+                    headToHeadRecords[teamA.name]++;
+                } else if (winner === teamB.name) {
+                    headToHeadRecords[teamB.name]++;
                 }
-            });
+            }
         });
+    });
 
-        // Sort by head-to-head wins first
-        let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadRecords[b.name] - headToHeadRecords[a.name]);
+    // Sort tied teams by total head-to-head wins
+    let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadRecords[b.name] - headToHeadRecords[a.name]);
 
-        // If still tied, use total points
-        if (headToHeadRecords[sortedByHeadToHead[0].name] === headToHeadRecords[sortedByHeadToHead[1].name]) {
-            sortedByHeadToHead.sort((a, b) => b.totalPoints - a.totalPoints);
-        }
-
-        // Display results
-        sortedByHeadToHead.forEach((team, index) => {
-            results += `<li>${index + 1}: ${team.name} (Head-to-Head Wins: ${headToHeadRecords[team.name]}, Total Points: ${team.totalPoints})</li>`;
-        });
+    // If the top teams are still tied in head-to-head, use total points
+    if (headToHeadRecords[sortedByHeadToHead[0].name] === headToHeadRecords[sortedByHeadToHead[1].name]) {
+        sortedByHeadToHead.sort((a, b) => b.totalPoints - a.totalPoints);
     }
+
+    // Display results
+    sortedByHeadToHead.forEach((team, index) => {
+        results += `<li>${index + 1}: ${team.name} (Head-to-Head Wins: ${headToHeadRecords[team.name]}, Total Points: ${team.totalPoints})</li>`;
+    });
 
     return results;
 }
+
 
 // Function to simulate head-to-head results (Replace with actual match data if available)
 function simulateHeadToHead(teamA, teamB) {
