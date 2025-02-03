@@ -110,8 +110,26 @@ function updateStandings(week) {
 
 // Reset standings to original
 function resetStandings() {
-    teams = JSON.parse(JSON.stringify(originalTeams));
+    teams = JSON.parse(JSON.stringify(originalTeams)); // Reset data
     loadStandings();
+
+    // ✅ Re-enable all "Update Standings" buttons
+    Object.keys(matchups).forEach(week => {
+        document.getElementById(`updateButton${week}`).disabled = false;
+    });
+
+    // ✅ Clear all dropdown selections
+    Object.keys(matchups).forEach(week => {
+        matchups[week].forEach((match, index) => {
+            document.getElementById(`match${week}_${index}`).value = "";
+        });
+    });
+
+    // ✅ Clear user-selected results
+    userResults = {};
+
+    // ✅ Clear tie-breaker results if needed
+    document.getElementById("tieBreakerContainer").innerHTML = "";
 }
 
 // Store user-entered match results for Weeks 16-18
