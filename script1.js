@@ -277,8 +277,6 @@ function simulateHeadToHead(teamA, teamB) {
 
 // Function to check and display tie-breakers
 function checkTieBreakers() {
-    console.log("🔎 Running checkTieBreakers()...");
-
     let standings = [...teams].sort((a, b) => b.wins - a.wins); // Sort teams by wins
     let tiedTeams = {};
 
@@ -291,25 +289,23 @@ function checkTieBreakers() {
         tiedTeams[key].push(team);
     });
 
-    console.log("🎯 Tied teams:", tiedTeams);
-
     let tieBreakerContainer = document.getElementById("tieBreakerContainer");
     tieBreakerContainer.innerHTML = ""; // Clear previous results
 
-    let tieBreakerResults = "<h3>🏆 Applied Tie-Breakers</h3><ul>";
+    let tieBreakerResults = "<h3>🏆 Applied Tie-Breakers</h3>";
+
     let tieOccurred = false;
 
     // Process each tie group
-    Object.values(tiedTeams).forEach(group => {
+    Object.entries(tiedTeams).forEach(([record, group]) => {
         if (group.length > 1) {
             tieOccurred = true;
-            console.log(`🔥 Resolving tie-breaker for: ${group.map(t => t.name)}`);
+            tieBreakerResults += `<h4>🔄 Teams Tied at ${record} (W-L)</h4><ul>`;
+
             let resolvedTies = resolveTies(group);
-            tieBreakerResults += resolvedTies;
+            tieBreakerResults += resolvedTies + "</ul><hr>"; // Add a horizontal line between cases
         }
     });
-
-    tieBreakerResults += "</ul>";
 
     // ✅ Ensure results update dynamically
     tieBreakerContainer.innerHTML = tieOccurred ? tieBreakerResults : "<p>No tie-breakers were needed.</p>";
@@ -318,8 +314,6 @@ function checkTieBreakers() {
 
 // Function to resolve tie-breakers (Head-to-Head → Total Points)
 function resolveTies(tiedGroup) {
-    console.log(`⚖ Resolving tie-breakers for: ${tiedGroup.map(t => t.name)}`);
-
     let results = "";
     let headToHeadRecords = {};
 
@@ -331,8 +325,6 @@ function resolveTies(tiedGroup) {
         tiedGroup.forEach(teamB => {
             if (teamA.name !== teamB.name) {
                 let winner = simulateHeadToHead(teamA, teamB);
-                console.log(`📊 Simulated: ${teamA.name} vs ${teamB.name} → Winner: ${winner}`);
-
                 if (winner) {
                     headToHeadRecords[winner]++; // Add 1 win for the winner
                 }
@@ -351,15 +343,16 @@ function resolveTies(tiedGroup) {
         sortedByHeadToHead.sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0));
     }
 
-    // Display final tie-breaker results
+    // ✅ Improved Display Formatting
     sortedByHeadToHead.forEach((team, index) => {
-        results += `<li><strong>${index + 1}:</strong> ${team.name} 
+        results += `<li><strong>${index + 1}. ${team.name}</strong> 
                     <br>🏆 Head-to-Head Wins: <strong>${headToHeadRecords[team.name]}</strong> 
                     <br>🔢 Total Points: <strong>${team.totalPoints !== undefined ? team.totalPoints : 'N/A'}</strong></li>`;
     });
 
     return results;
 }
+
 
 function updateStandings(week) {
     let button = document.getElementById(`updateButton${week}`);
