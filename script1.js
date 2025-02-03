@@ -284,7 +284,7 @@ function simulateHeadToHead(teamA, teamB) {
         console.log(`📊 Predefined result: ${matchup2} → Winner: ${headToHeadResults[matchup2]}`);
     }
 
-    console.log(`🔢 Final Head-to-Head Count: ${teamA.name} = ${wins[teamA.name]}, ${teamB.name} = ${wins[teamB.name]}`);
+    console.log(`🔢 Updated Head-to-Head Wins: ${teamA.name} = ${wins[teamA.name]}, ${teamB.name} = ${wins[teamB.name]}`);
 
     // ✅ Return the team with the most wins in head-to-head
     if (wins[teamA.name] > wins[teamB.name]) {
@@ -339,33 +339,33 @@ function resolveTies(tiedGroup) {
     let results = "";
     let headToHeadRecords = {};
 
-    // Initialize all teams' head-to-head win counts at 0
+    // ✅ Initialize head-to-head win counts at 0 for all tied teams
     tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
 
-    // Count total head-to-head wins for all tied teams
+    // ✅ Count total head-to-head wins for all tied teams
     tiedGroup.forEach(teamA => {
         tiedGroup.forEach(teamB => {
             if (teamA.name !== teamB.name) {
                 let winner = simulateHeadToHead(teamA, teamB);
                 if (winner) {
-                    headToHeadRecords[winner]++; // Add 1 win for the winner
+                    headToHeadRecords[winner] += 1; // ✅ Ensure we increment correctly
                 }
             }
         });
     });
 
-    console.log("🔢 Updated Head-to-Head Wins:", headToHeadRecords);
+    console.log("🔢 Final Head-to-Head Wins Before Sorting:", JSON.stringify(headToHeadRecords));
 
-    // Sort teams by total head-to-head wins
+    // ✅ Sort teams based on head-to-head wins
     let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadRecords[b.name] - headToHeadRecords[a.name]);
 
-    // If still tied in head-to-head, use total points as final tie-breaker
+    // ✅ If still tied in head-to-head, use total points as the final tie-breaker
     if (sortedByHeadToHead.length > 1 &&
         headToHeadRecords[sortedByHeadToHead[0].name] === headToHeadRecords[sortedByHeadToHead[1].name]) {
         sortedByHeadToHead.sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0));
     }
 
-    // ✅ Improved Display Formatting
+    // ✅ Display results properly
     sortedByHeadToHead.forEach((team, index) => {
         results += `<li><strong>${index + 1}. ${team.name}</strong> 
                     <br>🏆 Head-to-Head Wins: <strong>${headToHeadRecords[team.name]}</strong> 
