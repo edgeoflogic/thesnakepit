@@ -1,29 +1,102 @@
+/* Global Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background: #1E1E2E;
+    color: #FFFFFF;
+    margin: 0;
+    padding: 20px;
     text-align: center;
 }
 
+/* Headings */
+h1, h2, h3 {
+    color: #FFD700;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Standings Tables */
 table {
-    width: 60%;
-    margin: auto;
+    width: 90%;
+    margin: 20px auto;
     border-collapse: collapse;
+    background: #2A2A3C;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 th, td {
-    border: 1px solid black;
-    padding: 10px;
+    padding: 12px;
+    border-bottom: 1px solid #444;
 }
 
-h2 {
-    margin-top: 20px;
+th {
+    background: #4444AA;
+    color: white;
 }
 
-#matchupsContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+td {
+    background: #33334D;
 }
 
+/* Matchups & Selections */
 .matchup {
-    margin: 10px 0;
+    background: #252537;
+    padding: 15px;
+    margin: 10px auto;
+    width: 60%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown Styling */
+select {
+    background: #444;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    background: linear-gradient(135deg, #FF8C00, #FF4500);
+    border: none;
+    padding: 12px 20px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #FF4500, #FF0000);
+}
+
+/* Tie-Breaker Section */
+#tieBreakerContainer {
+    background: #202030;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#tieBreakerContainer h3 {
+    color: #FFD700;
+}
+
+#tieBreakerContainer ul {
+    list-style: none;
+    padding: 0;
+}
+
+#tieBreakerContainer li {
+    background: #2A2A3C;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-size: 16px;
 }
