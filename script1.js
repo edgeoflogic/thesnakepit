@@ -369,7 +369,9 @@ function simulateHeadToHead(teamA, teamB) {
 
 function updateStandings(week) {
     let button = document.getElementById(`updateButton${week}`);
-    button.disabled = true; // Temporarily disable button after clicking
+
+    // Temporarily disable the button to prevent spamming
+    button.disabled = true;
 
     matchups[week].forEach((match, index) => {
         let winner = document.getElementById(`match${week}_${index}`).value;
@@ -388,10 +390,35 @@ function updateStandings(week) {
     loadStandings();
     checkTieBreakers();
 
-    // 🔥 Re-enable the button after 1 second to allow updates
+    // ✅ Re-enable the button after 2 seconds
     setTimeout(() => {
         button.disabled = false;
-    }, 1000);
+    }, 2000);
+}
+
+function resetStandings() {
+    teams = JSON.parse(JSON.stringify(originalTeams)); // Reset data
+    loadStandings();
+
+    // ✅ Re-enable all "Update Standings" buttons
+    Object.keys(matchups).forEach(week => {
+        let button = document.getElementById(`updateButton${week}`);
+        if (button) button.disabled = false;
+    });
+
+    // ✅ Clear all dropdown selections
+    Object.keys(matchups).forEach(week => {
+        matchups[week].forEach((match, index) => {
+            let selectElement = document.getElementById(`match${week}_${index}`);
+            if (selectElement) selectElement.value = "";
+        });
+    });
+
+    // ✅ Clear user-selected results
+    userResults = {};
+
+    // ✅ Clear tie-breaker results if needed
+    document.getElementById("tieBreakerContainer").innerHTML = "";
 }
 
 // Ensure tie-breakers run on final standings update
