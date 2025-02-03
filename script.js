@@ -193,23 +193,33 @@ function resolveTies(tiedGroup) {
 
 
 
-// Function to simulate head-to-head results (Replace with actual match data if available)
+// Function to return head-to-head winner from match data
 function simulateHeadToHead(teamA, teamB) {
-    // Example hardcoded head-to-head matchups
-    let matchResults = {
+    let headToHeadResults = {
+        "Once Brenno, Twice Shai vs The Extra Ruscle": "Once Brenno, Twice Shai",
+        "The Extra Ruscle vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
         "Baton Rouge Cissies vs Pop's Prodigy": "Baton Rouge Cissies",
         "BIG EASYZ vs The Extra Ruscle": "BIG EASYZ",
         "P Giddey vs Ja Rules": "P Giddey"
-        // Add more matchups if needed
+        // Add more match results if necessary
     };
 
     let matchup1 = `${teamA.name} vs ${teamB.name}`;
     let matchup2 = `${teamB.name} vs ${teamA.name}`;
 
-    if (matchResults[matchup1]) return matchResults[matchup1];
-    if (matchResults[matchup2]) return matchResults[matchup2];
+    console.log(`Checking head-to-head: ${matchup1} OR ${matchup2}`);
 
-    return null; // No head-to-head result found, fallback to total points
+    if (headToHeadResults[matchup1]) {
+        console.log(`Head-to-head found: ${headToHeadResults[matchup1]} wins.`);
+        return headToHeadResults[matchup1];
+    }
+    if (headToHeadResults[matchup2]) {
+        console.log(`Head-to-head found: ${headToHeadResults[matchup2]} wins.`);
+        return headToHeadResults[matchup2];
+    }
+
+    console.log(`No head-to-head record found for ${teamA.name} and ${teamB.name}.`);
+    return null; // No head-to-head result found
 }
 
 // Modify updateStandings function to include tie-breaker check
