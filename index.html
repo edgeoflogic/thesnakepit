@@ -11,20 +11,36 @@
 
     <section id="standings">
         <h2>Current Standings</h2>
-        <table id="standingsTable">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Team</th>
-                    <th>Wins</th>
-                    <th>Losses</th>
-                    <th>Division</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Standings will be loaded dynamically -->
-            </tbody>
-        </table>
+        <div id="standingsContainer">
+            <div>
+                <h3>Communists (East)</h3>
+                <table id="eastStandingsTable" class="division-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Wins</th>
+                            <th>Losses</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div>
+                <h3>Liberals (West)</h3>
+                <table id="westStandingsTable" class="division-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Wins</th>
+                            <th>Losses</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
     </section>
 
     <section id="matchups">
@@ -37,9 +53,7 @@
 
     <section id="playoffBracket">
         <h2>Playoff Bracket</h2>
-        <ul id="bracketList">
-            <!-- Playoff teams will be updated dynamically -->
-        </ul>
+        <ul id="bracketList"></ul>
     </section>
 
     <script src="script.js"></script>
