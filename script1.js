@@ -253,6 +253,8 @@ function simulateHeadToHead(teamA, teamB) {
         "ChetGPT vs Jimmy’s Buckets": "ChetGPT",
         "BIG EASYZ vs Pop's Prodigy": "BIG EASYZ",
         "DrakesNewFavouriteTeam vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai"
+
+    };
             
     console.log(`🔎 Checking head-to-head: ${matchup1} OR ${matchup2}`);
 
