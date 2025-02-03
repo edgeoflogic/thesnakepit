@@ -118,9 +118,7 @@ function checkTieBreakers() {
     let standings = [...teams].sort((a, b) => b.wins - a.wins); // Sort teams by wins
     let tiedTeams = {};
 
-    console.log("Checking for ties...");  // Debugging log
-
-    // Identify teams with the same record
+    // Identify teams with identical win-loss records
     standings.forEach(team => {
         let key = `${team.wins}-${team.losses}`;
         if (!tiedTeams[key]) {
@@ -129,19 +127,16 @@ function checkTieBreakers() {
         tiedTeams[key].push(team);
     });
 
-    console.log("Tied teams found:", tiedTeams);  // Debugging log
-
-    // Clear previous results
+    // Clear previous tie-breaker results
     document.getElementById("tieBreakerContainer").innerHTML = "";
 
     let tieBreakerResults = "<h3>Applied Tie-Breakers</h3><ul>";
     let tieOccurred = false;
 
-    // Check for tie-breaker situations
+    // Process each tie group
     Object.values(tiedTeams).forEach(group => {
         if (group.length > 1) {
             tieOccurred = true;
-            console.log("Applying tie-breakers to:", group);  // Debugging log
             let resolvedTies = resolveTies(group);
             tieBreakerResults += resolvedTies;
         }
@@ -152,35 +147,83 @@ function checkTieBreakers() {
     // Display results if a tie occurred
     if (tieOccurred) {
         document.getElementById("tieBreakerContainer").innerHTML = tieBreakerResults;
-    } else {
-        console.log("No tie-breakers needed.");  // Debugging log
     }
 }
 
-// Function to resolve tie-breakers using head-to-head or total points
+// Function to resolve tie-breakers with correct priority
 function resolveTies(tiedGroup) {
     let results = "";
 
-    for (let i = 0; i < tiedGroup.length - 1; i++) {
-        let teamA = tiedGroup[i];
-        let teamB = tiedGroup[i + 1];
+    // If two teams are tied, use head-to-head directly
+    if (tiedGroup.length === 2) {
+        let teamA = tiedGroup[0];
+        let teamB = tiedGroup[1];
 
         let headToHeadWinner = simulateHeadToHead(teamA, teamB);
         
         if (headToHeadWinner) {
             results += `<li>${headToHeadWinner} wins tie-breaker over ${teamA.name === headToHeadWinner ? teamB.name : teamA.name} (Head-to-Head Result)</li>`;
         } else {
-            // Use total points as a final tiebreaker
+            // Use total points as final tie-breaker
             let totalPointsWinner = teamA.totalPoints > teamB.totalPoints ? teamA.name : teamB.name;
             results += `<li>${totalPointsWinner} wins tie-breaker over ${teamA.name === totalPointsWinner ? teamB.name : teamA.name} (Total Points Scored)</li>`;
         }
     }
+
+    // If 3+ teams are tied, sum head-to-head wins between them
+    else {
+        let headToHeadRecords = {};
+        tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
+
+        tiedGroup.forEach(teamA => {
+            tiedGroup.forEach(teamB => {
+                if (teamA.name !== teamB.name) {
+                    let winner = simulateHeadToHead(teamA, teamB);
+                    if (winner) {
+                        headToHeadRecords[winner]++;
+                    }
+                }
+            });
+        });
+
+        // Sort by head-to-head wins first
+        let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadRecords[b.name] - headToHeadRecords[a.name]);
+
+        // If still tied, use total points
+        if (headToHeadRecords[sortedByHeadToHead[0].name] === headToHeadRecords[sortedByHeadToHead[1].name]) {
+            sortedByHeadToHead.sort((a, b) => b.totalPoints - a.totalPoints);
+        }
+
+        // Display results
+        sortedByHeadToHead.forEach((team, index) => {
+            results += `<li>${index + 1}: ${team.name} (Head-to-Head Wins: ${headToHeadRecords[team.name]}, Total Points: ${team.totalPoints})</li>`;
+        });
+    }
+
     return results;
 }
 
-// Ensure this runs after standings update
+// Function to simulate head-to-head results (Replace with actual match data if available)
+function simulateHeadToHead(teamA, teamB) {
+    // Example hardcoded head-to-head matchups
+    let matchResults = {
+        "Baton Rouge Cissies vs Pop's Prodigy": "Baton Rouge Cissies",
+        "BIG EASYZ vs The Extra Ruscle": "BIG EASYZ",
+        "P Giddey vs Ja Rules": "P Giddey"
+        // Add more matchups if needed
+    };
+
+    let matchup1 = `${teamA.name} vs ${teamB.name}`;
+    let matchup2 = `${teamB.name} vs ${teamA.name}`;
+
+    if (matchResults[matchup1]) return matchResults[matchup1];
+    if (matchResults[matchup2]) return matchResults[matchup2];
+
+    return null; // No head-to-head result found, fallback to total points
+}
+
+// Modify updateStandings function to include tie-breaker check
 function updateStandings(week) {
-    console.log(`Updating standings for Week ${week}...`);  // Debugging log
     document.getElementById(`updateButton${week}`).disabled = true;
 
     matchups[week].forEach((match, index) => {
@@ -197,28 +240,8 @@ function updateStandings(week) {
     checkTieBreakers(); // Ensure this runs every time standings update
 }
 
-// Function to simulate head-to-head results (Replace with actual match data if available)
-function simulateHeadToHead(teamA, teamB) {
-    // Example hardcoded head-to-head matchups
-    let matchResults = {
-        "Baton Rouge Cissies vs Pop's Prodigy": "Baton Rouge Cissies",
-        "BIG EASYZ vs The Extra Ruscle": "BIG EASYZ",
-        "P Giddey vs Ja Rules": "P Giddey"
-        // Add other actual results here if needed
-    };
-
-    let matchup1 = `${teamA.name} vs ${teamB.name}`;
-    let matchup2 = `${teamB.name} vs ${teamA.name}`;
-
-    if (matchResults[matchup1]) return matchResults[matchup1];
-    if (matchResults[matchup2]) return matchResults[matchup2];
-
-    return null; // No head-to-head result found, fallback to total points
-}
-
-// Run tie-breakers at the end of all updates
+// Ensure tie-breakers run on final standings update
 window.onload = function () {
     loadStandings();
     loadMatchups();
 };
-
