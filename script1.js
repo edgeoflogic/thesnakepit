@@ -217,12 +217,12 @@ function checkTieBreakers() {
 // Function to resolve tie-breakers (Head-to-Head → Total Points)
 function resolveTies(tiedGroup) {
     let results = "";
-    let headToHeadRecords = {};
+    let headToHeadRecords = {};  // Make sure this object persists properly
 
-    // ✅ Initialize head-to-head records correctly (KEEP PREVIOUS VALUES)
+    // ✅ Do NOT overwrite existing values in `headToHeadRecords`
     tiedGroup.forEach(team => {
-        if (!headToHeadRecords[team.name]) {
-            headToHeadRecords[team.name] = 0;
+        if (!(team.name in headToHeadRecords)) {
+            headToHeadRecords[team.name] = 0;  // Only initialize if not already present
         }
     });
 
@@ -232,7 +232,7 @@ function resolveTies(tiedGroup) {
             if (teamA.name !== teamB.name) {
                 let winner = simulateHeadToHead(teamA, teamB);
                 if (winner) {
-                    headToHeadRecords[winner] += 1; // ✅ Ensure wins accumulate properly
+                    headToHeadRecords[winner] += 1;  // ✅ Ensure the wins accumulate properly
                 }
             }
         });
