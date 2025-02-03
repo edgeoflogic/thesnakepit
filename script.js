@@ -334,6 +334,25 @@ function resolveTies(tiedGroup) {
 
     // Initialize all teams' head-to-head win counts at 0
     tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
+    
+// Store user-entered match results for Weeks 16-18
+let userResults = {}; 
+
+// Function to return head-to-head winner, including user-entered results
+function simulateHeadToHead(teamA, teamB) {
+    let matchup1 = `${teamA.name} vs ${teamB.name}`;
+    let matchup2 = `${teamB.name} vs ${teamA.name}`;
+
+    // First, check if user-entered results exist for Weeks 16-18
+    if (userResults[matchup1]) return userResults[matchup1];
+    if (userResults[matchup2]) return userResults[matchup2];
+
+    // If no user result, use predefined head-to-head results
+    if (headToHeadResults[matchup1]) return headToHeadResults[matchup1];
+    if (headToHeadResults[matchup2]) return headToHeadResults[matchup2];
+
+    return null; // No head-to-head result found
+}
 
     // Count total head-to-head wins for all tied teams
     tiedGroup.forEach(teamA => {
@@ -366,7 +385,9 @@ function resolveTies(tiedGroup) {
     return results;
 }
 
-// Modify updateStandings function to include tie-breaker check
+// Store user-entered match results for tie-breakers
+let userResults = {};
+
 function updateStandings(week) {
     document.getElementById(`updateButton${week}`).disabled = true;
 
@@ -377,11 +398,15 @@ function updateStandings(week) {
             team.wins += 1;
             let loser = teams.find(t => t.name !== winner && (t.name === match.away || t.name === match.home));
             loser.losses += 1;
+
+            // Store user-inputted results for tie-breakers
+            let matchupKey = `${match.away} vs ${match.home}`;
+            userResults[matchupKey] = winner;
         }
     });
 
     loadStandings();
-    checkTieBreakers(); // Ensure this runs every time standings update
+    checkTieBreakers(); // Ensure tie-breakers update dynamically
 }
 
 // Ensure tie-breakers run on final standings update
