@@ -268,39 +268,39 @@ function simulateHeadToHead(teamA, teamB) {
 
     console.log(`🔎 Checking head-to-head: ${matchup1} OR ${matchup2}`);
 
+    // ✅ Ensure headToHeadWins is initialized
     if (!headToHeadWins[teamA.name]) headToHeadWins[teamA.name] = 0;
     if (!headToHeadWins[teamB.name]) headToHeadWins[teamB.name] = 0;
 
-    // ✅ Check user-selected results first
+    let winner = null;
+
+    // ✅ Check user-selected results
     if (userResults[matchup1]) {
         headToHeadWins[userResults[matchup1]] += 1;
+        winner = userResults[matchup1];
         console.log(`✅ User-selected result: ${matchup1} → Winner: ${userResults[matchup1]}`);
     }
     if (userResults[matchup2]) {
         headToHeadWins[userResults[matchup2]] += 1;
+        winner = userResults[matchup2];
         console.log(`✅ User-selected result: ${matchup2} → Winner: ${userResults[matchup2]}`);
     }
 
     // ✅ Check predefined head-to-head results
     if (headToHeadResults[matchup1]) {
         headToHeadWins[headToHeadResults[matchup1]] += 1;
+        winner = headToHeadResults[matchup1];
         console.log(`📊 Predefined result: ${matchup1} → Winner: ${headToHeadResults[matchup1]}`);
     }
     if (headToHeadResults[matchup2]) {
         headToHeadWins[headToHeadResults[matchup2]] += 1;
+        winner = headToHeadResults[matchup2];
         console.log(`📊 Predefined result: ${matchup2} → Winner: ${headToHeadResults[matchup2]}`);
     }
 
-    console.log(`🔢 Stored Head-to-Head Wins: ${teamA.name} = ${headToHeadWins[teamA.name]}, ${teamB.name} = ${headToHeadWins[teamB.name]}`);
+    console.log(`🔢 Updated Head-to-Head Wins: ${teamA.name} = ${headToHeadWins[teamA.name]}, ${teamB.name} = ${headToHeadWins[teamB.name]}`);
 
-    // ✅ Return the team with the most wins in head-to-head
-    if (headToHeadWins[teamA.name] > headToHeadWins[teamB.name]) {
-        return teamA.name;
-    } else if (headToHeadWins[teamB.name] > headToHeadWins[teamA.name]) {
-        return teamB.name;
-    } else {
-        return null; // Tied head-to-head
-    }
+    return winner;
 }
 
 
@@ -348,6 +348,13 @@ function resolveTies(tiedGroup) {
 
     console.log("🔥 Using Stored Head-to-Head Wins:", JSON.stringify(headToHeadWins));
 
+    // ✅ Ensure head-to-head data exists before sorting
+    tiedGroup.forEach(team => {
+        if (!headToHeadWins[team.name]) {
+            headToHeadWins[team.name] = 0;
+        }
+    });
+
     // ✅ Sort teams based on stored head-to-head wins
     let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadWins[b.name] - headToHeadWins[a.name]);
 
@@ -366,7 +373,6 @@ function resolveTies(tiedGroup) {
 
     return results;
 }
-
 
 
 function updateStandings(week) {
