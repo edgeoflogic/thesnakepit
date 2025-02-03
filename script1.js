@@ -264,27 +264,29 @@ function simulateHeadToHead(teamA, teamB) {
 
     let wins = { [teamA.name]: 0, [teamB.name]: 0 };
 
-    // ✅ Check and accumulate user-entered results
+    // ✅ Combine user-selected and predefined match results
+
+    // Check user-entered results and accumulate
     if (userResults[matchup1]) {
-        wins[userResults[matchup1]]++;
-        console.log(`✅ User input found: ${matchup1} → Winner: ${userResults[matchup1]}`);
+        wins[userResults[matchup1]] += 1;
+        console.log(`✅ User-selected result: ${matchup1} → Winner: ${userResults[matchup1]}`);
     }
     if (userResults[matchup2]) {
-        wins[userResults[matchup2]]++;
-        console.log(`✅ User input found: ${matchup2} → Winner: ${userResults[matchup2]}`);
+        wins[userResults[matchup2]] += 1;
+        console.log(`✅ User-selected result: ${matchup2} → Winner: ${userResults[matchup2]}`);
     }
 
-    // ✅ Check and accumulate predefined head-to-head results
+    // Check predefined head-to-head results and accumulate
     if (headToHeadResults[matchup1]) {
-        wins[headToHeadResults[matchup1]]++;
+        wins[headToHeadResults[matchup1]] += 1;
         console.log(`📊 Predefined result: ${matchup1} → Winner: ${headToHeadResults[matchup1]}`);
     }
     if (headToHeadResults[matchup2]) {
-        wins[headToHeadResults[matchup2]]++;
+        wins[headToHeadResults[matchup2]] += 1;
         console.log(`📊 Predefined result: ${matchup2} → Winner: ${headToHeadResults[matchup2]}`);
     }
 
-    console.log(`🔢 Updated Head-to-Head Wins: ${teamA.name} = ${wins[teamA.name]}, ${teamB.name} = ${wins[teamB.name]}`);
+    console.log(`🔢 Final Head-to-Head Wins: ${teamA.name} = ${wins[teamA.name]}, ${teamB.name} = ${wins[teamB.name]}`);
 
     // ✅ Return the team with the most wins in head-to-head
     if (wins[teamA.name] > wins[teamB.name]) {
@@ -295,7 +297,6 @@ function simulateHeadToHead(teamA, teamB) {
         return null; // Tied head-to-head
     }
 }
-
 
 
 // Function to check and display tie-breakers
