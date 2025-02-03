@@ -391,7 +391,8 @@ function simulateHeadToHead(teamA, teamB) {
 }
 
 function updateStandings(week) {
-    document.getElementById(`updateButton${week}`).disabled = true;
+    let button = document.getElementById(`updateButton${week}`);
+    button.disabled = true; // Temporarily disable button after clicking
 
     matchups[week].forEach((match, index) => {
         let winner = document.getElementById(`match${week}_${index}`).value;
@@ -408,7 +409,12 @@ function updateStandings(week) {
     });
 
     loadStandings();
-    checkTieBreakers(); // 🔥 Ensure tie-breakers update dynamically
+    checkTieBreakers();
+
+    // 🔥 Re-enable the button after 1 second to allow updates
+    setTimeout(() => {
+        button.disabled = false;
+    }, 1000);
 }
 
 // Ensure tie-breakers run on final standings update
