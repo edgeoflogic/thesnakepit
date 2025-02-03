@@ -118,6 +118,8 @@ function checkTieBreakers() {
     let standings = [...teams].sort((a, b) => b.wins - a.wins); // Sort teams by wins
     let tiedTeams = {};
 
+    console.log("Checking for ties...");  // Debugging log
+
     // Identify teams with the same record
     standings.forEach(team => {
         let key = `${team.wins}-${team.losses}`;
@@ -126,6 +128,8 @@ function checkTieBreakers() {
         }
         tiedTeams[key].push(team);
     });
+
+    console.log("Tied teams found:", tiedTeams);  // Debugging log
 
     // Clear previous results
     document.getElementById("tieBreakerContainer").innerHTML = "";
@@ -137,6 +141,7 @@ function checkTieBreakers() {
     Object.values(tiedTeams).forEach(group => {
         if (group.length > 1) {
             tieOccurred = true;
+            console.log("Applying tie-breakers to:", group);  // Debugging log
             let resolvedTies = resolveTies(group);
             tieBreakerResults += resolvedTies;
         }
@@ -147,6 +152,8 @@ function checkTieBreakers() {
     // Display results if a tie occurred
     if (tieOccurred) {
         document.getElementById("tieBreakerContainer").innerHTML = tieBreakerResults;
+    } else {
+        console.log("No tie-breakers needed.");  // Debugging log
     }
 }
 
@@ -171,8 +178,9 @@ function resolveTies(tiedGroup) {
     return results;
 }
 
-// Modify updateStandings function to include tie-breaker check
+// Ensure this runs after standings update
 function updateStandings(week) {
+    console.log(`Updating standings for Week ${week}...`);  // Debugging log
     document.getElementById(`updateButton${week}`).disabled = true;
 
     matchups[week].forEach((match, index) => {
@@ -189,8 +197,9 @@ function updateStandings(week) {
     checkTieBreakers(); // Ensure this runs every time standings update
 }
 
-// Ensure tie-breakers run on final standings update
+// Run tie-breakers at the end of all updates
 window.onload = function () {
     loadStandings();
     loadMatchups();
 };
+
