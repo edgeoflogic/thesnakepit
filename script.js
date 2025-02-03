@@ -21,24 +21,37 @@ let matchups = [
     { week: 1, away: "ChetGPT", home: "BIG EASYZ" }
 ];
 
-// Load current standings
+// Load standings into two separate tables
 function loadStandings() {
-    let tableBody = document.querySelector("#standingsTable tbody");
-    tableBody.innerHTML = "";
-    teams.sort((a, b) => b.wins - a.wins);
-    teams.forEach((team, index) => {
-        let row = `<tr>
+    let eastTable = document.querySelector("#eastStandingsTable tbody");
+    let westTable = document.querySelector("#westStandingsTable tbody");
+
+    eastTable.innerHTML = "";
+    westTable.innerHTML = "";
+
+    let eastTeams = teams.filter(t => t.division === "East").sort((a, b) => b.wins - a.wins);
+    let westTeams = teams.filter(t => t.division === "West").sort((a, b) => b.wins - a.wins);
+
+    eastTeams.forEach((team, index) => {
+        eastTable.innerHTML += `<tr>
             <td>${index + 1}</td>
             <td>${team.name}</td>
             <td>${team.wins}</td>
             <td>${team.losses}</td>
-            <td>${team.division}</td>
         </tr>`;
-        tableBody.innerHTML += row;
+    });
+
+    westTeams.forEach((team, index) => {
+        westTable.innerHTML += `<tr>
+            <td>${index + 1}</td>
+            <td>${team.name}</td>
+            <td>${team.wins}</td>
+            <td>${team.losses}</td>
+        </tr>`;
     });
 }
 
-// Generate matchup inputs
+// Generate matchup inputs with dropdown selections
 function loadMatchups() {
     let container = document.getElementById("matchupsContainer");
     container.innerHTML = "";
