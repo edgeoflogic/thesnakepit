@@ -113,6 +113,91 @@ function resetStandings() {
     loadStandings();
 }
 
+// Function to check for and display tie-breakers
+function checkTieBreakers() {
+    let tiedTeams = [];
+    let standings = [...teams].sort((a, b) => b.wins - a.wins);
+
+    // Find teams with identical records
+    for (let i = 0; i < standings.length - 1; i++) {
+        if (standings[i].wins === standings[i + 1].wins) {
+            tiedTeams.push(standings[i], standings[i + 1]);
+        }
+    }
+
+    if (tiedTeams.length === 0) {
+        document.getElementById("tieBreakerContainer").innerHTML = "";
+        return; // No ties, so no need to display anything
+    }
+
+    // Tie-breaker logic
+    let tieBreakerResults = "<h3>Applied Tie-Breakers</h3><ul>";
+    let resolvedTies = [];
+
+    for (let i = 0; i < tiedTeams.length; i += 2) {
+        let teamA = tiedTeams[i];
+        let teamB = tiedTeams[i + 1];
+
+        // Simulate a head-to-head result (assuming we have the match data)
+        let headToHeadWinner = simulateHeadToHead(teamA, teamB);
+        
+        if (headToHeadWinner) {
+            tieBreakerResults += `<li>${headToHeadWinner} wins the tie-breaker over ${teamA.name === headToHeadWinner ? teamB.name : teamA.name} (Head-to-Head Result)</li>`;
+            resolvedTies.push(teamA, teamB);
+        } else {
+            // Use total points as final tie-breaker
+            let totalPointsWinner = teamA.totalPoints > teamB.totalPoints ? teamA.name : teamB.name;
+            tieBreakerResults += `<li>${totalPointsWinner} wins the tie-breaker over ${teamA.name === totalPointsWinner ? teamB.name : teamA.name} (Total Points Scored)</li>`;
+        }
+    }
+
+    tieBreakerResults += "</ul>";
+    document.getElementById("tieBreakerContainer").innerHTML = tieBreakerResults;
+}
+
+// Simulate head-to-head results (Placeholder, replace with actual data)
+function simulateHeadToHead(teamA, teamB) {
+    // Assume we have head-to-head match records
+    let matchResults = {
+        "Baton Rouge Cissies vs Pop's Prodigy": "Baton Rouge Cissies",
+        "BIG EASYZ vs The Extra Ruscle": "BIG EASYZ"
+        // Add other actual results if available
+    };
+
+    let matchup1 = `${teamA.name} vs ${teamB.name}`;
+    let matchup2 = `${teamB.name} vs ${teamA.name}`;
+
+    if (matchResults[matchup1]) return matchResults[matchup1];
+    if (matchResults[matchup2]) return matchResults[matchup2];
+
+    return null; // No head-to-head result found
+}
+
+// Modify updateStandings function to include tie-breaker check
+function updateStandings(week) {
+    document.getElementById(`updateButton${week}`).disabled = true;
+
+    matchups[week].forEach((match, index) => {
+        let winner = document.getElementById(`match${week}_${index}`).value;
+        if (winner) {
+            let team = teams.find(t => t.name === winner);
+            team.wins += 1;
+            let loser = teams.find(t => t.name !== winner && (t.name === match.away || t.name === match.home));
+            loser.losses += 1;
+        }
+    });
+
+    loadStandings();
+    checkTieBreakers(); // Check if tie-breakers are needed
+}
+
+// Ensure tie-breakers run on final standings update
+
+window.onload = function () {
+    loadStandings();
+    loadMatchups();
+};
+
 window.onload = function () {
     loadStandings();
     loadMatchups();
