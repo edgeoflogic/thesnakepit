@@ -264,7 +264,7 @@ function simulateHeadToHead(teamA, teamB) {
 
     let wins = { [teamA.name]: 0, [teamB.name]: 0 };
 
-    // ✅ Check user-entered results first
+    // ✅ Check and accumulate user-entered results
     if (userResults[matchup1]) {
         wins[userResults[matchup1]]++;
         console.log(`✅ User input found: ${matchup1} → Winner: ${userResults[matchup1]}`);
@@ -274,7 +274,7 @@ function simulateHeadToHead(teamA, teamB) {
         console.log(`✅ User input found: ${matchup2} → Winner: ${userResults[matchup2]}`);
     }
 
-    // ✅ Check predefined head-to-head results
+    // ✅ Check and accumulate predefined head-to-head results
     if (headToHeadResults[matchup1]) {
         wins[headToHeadResults[matchup1]]++;
         console.log(`📊 Predefined result: ${matchup1} → Winner: ${headToHeadResults[matchup1]}`);
@@ -295,6 +295,7 @@ function simulateHeadToHead(teamA, teamB) {
         return null; // Tied head-to-head
     }
 }
+
 
 
 // Function to check and display tie-breakers
@@ -339,7 +340,7 @@ function resolveTies(tiedGroup) {
     let results = "";
     let headToHeadRecords = {};
 
-    // ✅ Initialize head-to-head win counts at 0 for all tied teams
+    // ✅ Initialize win counts at 0 for all tied teams
     tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
 
     // ✅ Count total head-to-head wins for all tied teams
@@ -348,7 +349,7 @@ function resolveTies(tiedGroup) {
             if (teamA.name !== teamB.name) {
                 let winner = simulateHeadToHead(teamA, teamB);
                 if (winner) {
-                    headToHeadRecords[winner] += 1; // ✅ Ensure we increment correctly
+                    headToHeadRecords[winner] += 1; // ✅ Correctly store accumulated results
                 }
             }
         });
@@ -374,6 +375,7 @@ function resolveTies(tiedGroup) {
 
     return results;
 }
+
 
 
 function updateStandings(week) {
