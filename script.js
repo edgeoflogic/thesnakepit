@@ -197,6 +197,25 @@ function updateStandings(week) {
     checkTieBreakers(); // Ensure this runs every time standings update
 }
 
+// Function to simulate head-to-head results (Replace with actual match data if available)
+function simulateHeadToHead(teamA, teamB) {
+    // Example hardcoded head-to-head matchups
+    let matchResults = {
+        "Baton Rouge Cissies vs Pop's Prodigy": "Baton Rouge Cissies",
+        "BIG EASYZ vs The Extra Ruscle": "BIG EASYZ",
+        "P Giddey vs Ja Rules": "P Giddey"
+        // Add other actual results here if needed
+    };
+
+    let matchup1 = `${teamA.name} vs ${teamB.name}`;
+    let matchup2 = `${teamB.name} vs ${teamA.name}`;
+
+    if (matchResults[matchup1]) return matchResults[matchup1];
+    if (matchResults[matchup2]) return matchResults[matchup2];
+
+    return null; // No head-to-head result found, fallback to total points
+}
+
 // Run tie-breakers at the end of all updates
 window.onload = function () {
     loadStandings();
