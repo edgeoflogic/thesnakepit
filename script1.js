@@ -14,6 +14,87 @@ const originalTeams = [
 
 let teams = JSON.parse(JSON.stringify(originalTeams)); // Clone original standings
 
+// ✅ PLACE THIS NEAR THE TOP OF `script.js` BEFORE FUNCTIONS
+const headToHeadResults = {
+    "The Extra Ruscle vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
+        "Ja Rules vs Pop's Prodigy": "Pop's Prodigy",
+        "P Giddey vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
+        "Baton Rouge Cissies vs Jimmy’s Buckets": "Baton Rouge Cissies",
+        "ChetGPT vs BIG EASYZ": "ChetGPT",
+        "P Giddey vs Ja Rules": "P Giddey",
+        "Once Brenno, Twice Shai vs Baton Rouge Cissies": "Baton Rouge Cissies",
+        "The Extra Ruscle vs ChetGPT": "The Extra Ruscle",
+        "Pop's Prodigy vs Jimmy’s Buckets": "Pop's Prodigy",
+        "DrakesNewFavouriteTeam vs BIG EASYZ": "BIG EASYZ",
+        "ChetGPT vs Baton Rouge Cissies": "Baton Rouge Cissies",
+        "Jimmy’s Buckets vs Ja Rules": "Jimmy’s Buckets",
+        "BIG EASYZ vs P Giddey": "BIG EASYZ",
+        "Pop's Prodigy vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
+        "DrakesNewFavouriteTeam vs The Extra Ruscle": "The Extra Ruscle",
+        "BIG EASYZ vs Jimmy’s Buckets": "BIG EASYZ",
+        "Baton Rouge Cissies vs Pop's Prodigy": "Baton Rouge Cissies",
+        "ChetGPT vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
+        "Ja Rules vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
+        "P Giddey vs The Extra Ruscle": "The Extra Ruscle",
+        "DrakesNewFavouriteTeam vs Pop's Prodigy": "Pop's Prodigy",
+        "Once Brenno, Twice Shai vs Jimmy’s Buckets": "Once Brenno, Twice Shai",
+        "The Extra Ruscle vs BIG EASYZ": "BIG EASYZ",
+        "Ja Rules vs Baton Rouge Cissies": "Baton Rouge Cissies",
+        "P Giddey vs ChetGPT": "ChetGPT",
+        "Ja Rules vs The Extra Ruscle": "The Extra Ruscle",
+        "Baton Rouge Cissies vs P Giddey": "Baton Rouge Cissies",
+        "Jimmy’s Buckets vs ChetGPT": "ChetGPT",
+        "Pop's Prodigy vs BIG EASYZ": "BIG EASYZ",
+        "Once Brenno, Twice Shai vs DrakesNewFavouriteTeam": "Once Brenno, Twice Shai",
+        "The Extra Ruscle vs Baton Rouge Cissies": "The Extra Ruscle",
+        "P Giddey vs Jimmy’s Buckets": "Jimmy’s Buckets",
+        "ChetGPT vs Pop's Prodigy": "Pop's Prodigy",
+        "BIG EASYZ vs Once Brenno, Twice Shai": "BIG EASYZ",
+        "DrakesNewFavouriteTeam vs Ja Rules": "Ja Rules",
+        "Jimmy’s Buckets vs The Extra Ruscle": "Jimmy’s Buckets",
+        "Pop's Prodigy vs P Giddey": "P Giddey",
+        "Once Brenno, Twice Shai vs ChetGPT": "ChetGPT",
+        "Ja Rules vs BIG EASYZ": "BIG EASYZ",
+        "Baton Rouge Cissies vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
+        "The Extra Ruscle vs Pop's Prodigy": "The Extra Ruscle",
+        "Jimmy’s Buckets vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
+        "DrakesNewFavouriteTeam vs P Giddey": "P Giddey",
+        "Baton Rouge Cissies vs Ja Rules": "Baton Rouge Cissies",
+        "BIG EASYZ vs ChetGPT": "ChetGPT",
+        "P Giddey vs Once Brenno, Twice Shai": "P Giddey",
+        "Pop's Prodigy vs Ja Rules": "Pop's Prodigy",
+        "ChetGPT vs The Extra Ruscle": "ChetGPT",
+        "Jimmy’s Buckets vs Baton Rouge Cissies": "Baton Rouge Cissies",
+        "BIG EASYZ vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
+        "ChetGPT vs Ja Rules": "Ja Rules",
+        "Baton Rouge Cissies vs Once Brenno, Twice Shai": "Baton Rouge Cissies",
+        "P Giddey vs BIG EASYZ": "BIG EASYZ",
+        "Jimmy’s Buckets vs Pop's Prodigy": "Jimmy’s Buckets",
+        "The Extra Ruscle vs DrakesNewFavouriteTeam": "The Extra Ruscle",
+        "BIG EASYZ vs Baton Rouge Cissies": "BIG EASYZ",
+        "Ja Rules vs Jimmy’s Buckets": "Jimmy’s Buckets",
+        "DrakesNewFavouriteTeam vs ChetGPT": "ChetGPT",
+        "Once Brenno, Twice Shai vs Pop's Prodigy": "Pop's Prodigy",
+        "The Extra Ruscle vs P Giddey": "The Extra Ruscle",
+        "DrakesNewFavouriteTeam vs Jimmy’s Buckets": "DrakesNewFavouriteTeam",
+        "Pop's Prodigy vs Baton Rouge Cissies": "Pop's Prodigy",
+        "BIG EASYZ vs The Extra Ruscle": "BIG EASYZ",
+        "Once Brenno, Twice Shai vs Ja Rules": "Ja Rules",
+        "ChetGPT vs P Giddey": "ChetGPT",
+        "Once Brenno, Twice Shai vs The Extra Ruscle": "Once Brenno, Twice Shai",
+        "Ja Rules vs P Giddey": "Ja Rules",
+        "Baton Rouge Cissies vs ChetGPT": "Baton Rouge Cissies",
+        "Jimmy’s Buckets vs BIG EASYZ": "BIG EASYZ",
+        "Pop's Prodigy vs DrakesNewFavouriteTeam": "Pop's Prodigy",
+        "The Extra Ruscle vs Ja Rules": "Ja Rules",
+        "P Giddey vs Baton Rouge Cissies": "Baton Rouge Cissies",
+        "ChetGPT vs Jimmy’s Buckets": "ChetGPT",
+        "BIG EASYZ vs Pop's Prodigy": "BIG EASYZ",
+        "DrakesNewFavouriteTeam vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai"
+
+    };
+
+    
 // Matchups for Weeks 16-18
 const matchups = {
     16: [
@@ -175,99 +256,23 @@ function resolveTies(tiedGroup) {
     return results;
 }
 
-// Function to return head-to-head winner from match data
+// ✅ Ensure `headToHeadResults` is defined BEFORE this function
 function simulateHeadToHead(teamA, teamB) {
-    let headToHeadResults = {
-        "The Extra Ruscle vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
-        "Ja Rules vs Pop's Prodigy": "Pop's Prodigy",
-        "P Giddey vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
-        "Baton Rouge Cissies vs Jimmy’s Buckets": "Baton Rouge Cissies",
-        "ChetGPT vs BIG EASYZ": "ChetGPT",
-        "P Giddey vs Ja Rules": "P Giddey",
-        "Once Brenno, Twice Shai vs Baton Rouge Cissies": "Baton Rouge Cissies",
-        "The Extra Ruscle vs ChetGPT": "The Extra Ruscle",
-        "Pop's Prodigy vs Jimmy’s Buckets": "Pop's Prodigy",
-        "DrakesNewFavouriteTeam vs BIG EASYZ": "BIG EASYZ",
-        "ChetGPT vs Baton Rouge Cissies": "Baton Rouge Cissies",
-        "Jimmy’s Buckets vs Ja Rules": "Jimmy’s Buckets",
-        "BIG EASYZ vs P Giddey": "BIG EASYZ",
-        "Pop's Prodigy vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
-        "DrakesNewFavouriteTeam vs The Extra Ruscle": "The Extra Ruscle",
-        "BIG EASYZ vs Jimmy’s Buckets": "BIG EASYZ",
-        "Baton Rouge Cissies vs Pop's Prodigy": "Baton Rouge Cissies",
-        "ChetGPT vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
-        "Ja Rules vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
-        "P Giddey vs The Extra Ruscle": "The Extra Ruscle",
-        "DrakesNewFavouriteTeam vs Pop's Prodigy": "Pop's Prodigy",
-        "Once Brenno, Twice Shai vs Jimmy’s Buckets": "Once Brenno, Twice Shai",
-        "The Extra Ruscle vs BIG EASYZ": "BIG EASYZ",
-        "Ja Rules vs Baton Rouge Cissies": "Baton Rouge Cissies",
-        "P Giddey vs ChetGPT": "ChetGPT",
-        "Ja Rules vs The Extra Ruscle": "The Extra Ruscle",
-        "Baton Rouge Cissies vs P Giddey": "Baton Rouge Cissies",
-        "Jimmy’s Buckets vs ChetGPT": "ChetGPT",
-        "Pop's Prodigy vs BIG EASYZ": "BIG EASYZ",
-        "Once Brenno, Twice Shai vs DrakesNewFavouriteTeam": "Once Brenno, Twice Shai",
-        "The Extra Ruscle vs Baton Rouge Cissies": "The Extra Ruscle",
-        "P Giddey vs Jimmy’s Buckets": "Jimmy’s Buckets",
-        "ChetGPT vs Pop's Prodigy": "Pop's Prodigy",
-        "BIG EASYZ vs Once Brenno, Twice Shai": "BIG EASYZ",
-        "DrakesNewFavouriteTeam vs Ja Rules": "Ja Rules",
-        "Jimmy’s Buckets vs The Extra Ruscle": "Jimmy’s Buckets",
-        "Pop's Prodigy vs P Giddey": "P Giddey",
-        "Once Brenno, Twice Shai vs ChetGPT": "ChetGPT",
-        "Ja Rules vs BIG EASYZ": "BIG EASYZ",
-        "Baton Rouge Cissies vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
-        "The Extra Ruscle vs Pop's Prodigy": "The Extra Ruscle",
-        "Jimmy’s Buckets vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai",
-        "DrakesNewFavouriteTeam vs P Giddey": "P Giddey",
-        "Baton Rouge Cissies vs Ja Rules": "Baton Rouge Cissies",
-        "BIG EASYZ vs ChetGPT": "ChetGPT",
-        "P Giddey vs Once Brenno, Twice Shai": "P Giddey",
-        "Pop's Prodigy vs Ja Rules": "Pop's Prodigy",
-        "ChetGPT vs The Extra Ruscle": "ChetGPT",
-        "Jimmy’s Buckets vs Baton Rouge Cissies": "Baton Rouge Cissies",
-        "BIG EASYZ vs DrakesNewFavouriteTeam": "DrakesNewFavouriteTeam",
-        "ChetGPT vs Ja Rules": "Ja Rules",
-        "Baton Rouge Cissies vs Once Brenno, Twice Shai": "Baton Rouge Cissies",
-        "P Giddey vs BIG EASYZ": "BIG EASYZ",
-        "Jimmy’s Buckets vs Pop's Prodigy": "Jimmy’s Buckets",
-        "The Extra Ruscle vs DrakesNewFavouriteTeam": "The Extra Ruscle",
-        "BIG EASYZ vs Baton Rouge Cissies": "BIG EASYZ",
-        "Ja Rules vs Jimmy’s Buckets": "Jimmy’s Buckets",
-        "DrakesNewFavouriteTeam vs ChetGPT": "ChetGPT",
-        "Once Brenno, Twice Shai vs Pop's Prodigy": "Pop's Prodigy",
-        "The Extra Ruscle vs P Giddey": "The Extra Ruscle",
-        "DrakesNewFavouriteTeam vs Jimmy’s Buckets": "DrakesNewFavouriteTeam",
-        "Pop's Prodigy vs Baton Rouge Cissies": "Pop's Prodigy",
-        "BIG EASYZ vs The Extra Ruscle": "BIG EASYZ",
-        "Once Brenno, Twice Shai vs Ja Rules": "Ja Rules",
-        "ChetGPT vs P Giddey": "ChetGPT",
-        "Once Brenno, Twice Shai vs The Extra Ruscle": "Once Brenno, Twice Shai",
-        "Ja Rules vs P Giddey": "Ja Rules",
-        "Baton Rouge Cissies vs ChetGPT": "Baton Rouge Cissies",
-        "Jimmy’s Buckets vs BIG EASYZ": "BIG EASYZ",
-        "Pop's Prodigy vs DrakesNewFavouriteTeam": "Pop's Prodigy",
-        "The Extra Ruscle vs Ja Rules": "Ja Rules",
-        "P Giddey vs Baton Rouge Cissies": "Baton Rouge Cissies",
-        "ChetGPT vs Jimmy’s Buckets": "ChetGPT",
-        "BIG EASYZ vs Pop's Prodigy": "BIG EASYZ",
-        "DrakesNewFavouriteTeam vs Once Brenno, Twice Shai": "Once Brenno, Twice Shai"
+    let matchup1 = `${teamA.name} vs ${teamB.name}`;
+    let matchup2 = `${teamB.name} vs ${teamA.name}`;
 
-    };
-            
     console.log(`🔎 Checking head-to-head: ${matchup1} OR ${matchup2}`);
 
-    // ✅ First, check if user-entered results exist
+    // ✅ Check user-entered results first
     if (userResults[matchup1]) return userResults[matchup1];
     if (userResults[matchup2]) return userResults[matchup2];
 
-    // ✅ If no user result, use predefined head-to-head results
+    // ✅ Check predefined head-to-head results
     if (headToHeadResults[matchup1]) return headToHeadResults[matchup1];
     if (headToHeadResults[matchup2]) return headToHeadResults[matchup2];
 
     console.log(`⚠ No head-to-head record found for ${teamA.name} and ${teamB.name}.`);
-    return null; // No head-to-head result found
+    return null;
 }
 
 // Function to check and display tie-breakers
