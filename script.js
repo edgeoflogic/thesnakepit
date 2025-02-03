@@ -113,7 +113,10 @@ function resetStandings() {
     loadStandings();
 }
 
-// Function to check and display tie-breakers with improved readability
+// Store user-entered match results for Weeks 16-18
+let userResults = {};
+
+// Function to check and display tie-breakers
 function checkTieBreakers() {
     let standings = [...teams].sort((a, b) => b.wins - a.wins); // Sort teams by wins
     let tiedTeams = {};
@@ -152,16 +155,13 @@ function checkTieBreakers() {
     }
 }
 
-
 // Function to resolve tie-breakers (Head-to-Head → Total Points)
 function resolveTies(tiedGroup) {
     let results = "";
     let headToHeadRecords = {};
 
     // Initialize all teams' head-to-head win counts at 0
-    tiedGroup.forEach(team => {
-        headToHeadRecords[team.name] = 0;
-    });
+    tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
 
     // Count total head-to-head wins for all tied teams
     tiedGroup.forEach(teamA => {
@@ -181,7 +181,7 @@ function resolveTies(tiedGroup) {
     // Sort teams by total head-to-head wins
     let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadRecords[b.name] - headToHeadRecords[a.name]);
 
-    // If still tied in head-to-head, use total points as the final tie-breaker
+    // If still tied in head-to-head, use total points as final tie-breaker
     if (sortedByHeadToHead.length > 1 &&
         headToHeadRecords[sortedByHeadToHead[0].name] === headToHeadRecords[sortedByHeadToHead[1].name]) {
         sortedByHeadToHead.sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0));
@@ -389,9 +389,6 @@ function simulateHeadToHead(teamA, teamB) {
     return results;
 }
 
-// Store user-entered match results for tie-breakers
-let userResults = {};
-
 function updateStandings(week) {
     document.getElementById(`updateButton${week}`).disabled = true;
 
@@ -410,7 +407,7 @@ function updateStandings(week) {
     });
 
     loadStandings();
-    checkTieBreakers(); // Ensure tie-breakers update dynamically
+    checkTieBreakers(); // 🔥 Ensure tie-breakers update dynamically
 }
 
 // Ensure tie-breakers run on final standings update
