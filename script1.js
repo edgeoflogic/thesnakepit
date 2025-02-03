@@ -219,10 +219,10 @@ function resolveTies(tiedGroup) {
     let results = "";
     let headToHeadRecords = {};
 
-    // Initialize all teams' head-to-head win counts at 0
+    // ✅ Initialize win counts at 0 for all tied teams
     tiedGroup.forEach(team => headToHeadRecords[team.name] = 0);
 
-    // Count total head-to-head wins for all tied teams
+    // ✅ Count total head-to-head wins for all tied teams
     tiedGroup.forEach(teamA => {
         tiedGroup.forEach(teamB => {
             if (teamA.name !== teamB.name) {
@@ -234,21 +234,20 @@ function resolveTies(tiedGroup) {
         });
     });
 
-    // Debugging log to verify head-to-head counts
-    console.log("Updated Head-to-Head Wins:", headToHeadRecords);
+    console.log("🔢 Updated Head-to-Head Wins:", headToHeadRecords);
 
-    // Sort teams by total head-to-head wins
+    // ✅ Sort teams based on head-to-head wins
     let sortedByHeadToHead = [...tiedGroup].sort((a, b) => headToHeadRecords[b.name] - headToHeadRecords[a.name]);
 
-    // If still tied in head-to-head, use total points as final tie-breaker
+    // ✅ If still tied in head-to-head, use total points as the final tie-breaker
     if (sortedByHeadToHead.length > 1 &&
         headToHeadRecords[sortedByHeadToHead[0].name] === headToHeadRecords[sortedByHeadToHead[1].name]) {
         sortedByHeadToHead.sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0));
     }
 
-    // Display final tie-breaker results
+    // ✅ Display correct ranking format
     sortedByHeadToHead.forEach((team, index) => {
-        results += `<li><strong>${index + 1}:</strong> ${team.name} 
+        results += `<li><strong>${index + 1}. ${team.name}</strong> 
                     <br>🏆 Head-to-Head Wins: <strong>${headToHeadRecords[team.name]}</strong> 
                     <br>🔢 Total Points: <strong>${team.totalPoints !== undefined ? team.totalPoints : 'N/A'}</strong></li>`;
     });
@@ -285,7 +284,7 @@ function simulateHeadToHead(teamA, teamB) {
         console.log(`📊 Predefined result: ${matchup2} → Winner: ${headToHeadResults[matchup2]}`);
     }
 
-    console.log(`🔢 Updated Head-to-Head Wins: ${teamA.name} = ${wins[teamA.name]}, ${teamB.name} = ${wins[teamB.name]}`);
+    console.log(`🔢 Final Head-to-Head Count: ${teamA.name} = ${wins[teamA.name]}, ${teamB.name} = ${wins[teamB.name]}`);
 
     // ✅ Return the team with the most wins in head-to-head
     if (wins[teamA.name] > wins[teamB.name]) {
@@ -296,6 +295,7 @@ function simulateHeadToHead(teamA, teamB) {
         return null; // Tied head-to-head
     }
 }
+
 
 // Function to check and display tie-breakers
 function checkTieBreakers() {
